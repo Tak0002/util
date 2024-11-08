@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONフォーマッター</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 1.5em;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: monospace;
+        }
+        pre {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap; /* 折り返し設定 */
+            word-wrap: break-word;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JSONフォーマッター</h1>
+        <textarea id="jsonInput" placeholder="ここにJSONを入力してください..."></textarea>
+        <button onclick="formatJson()">フォーマット</button>
+        <pre id="jsonOutput"></pre>
+        <p id="error" class="error"></p>
+    </div>
+
+    <script>
+        function formatJson() {
+            const input = document.getElementById('jsonInput').value;
+            const output = document.getElementById('jsonOutput');
+            const error = document.getElementById('error');
+            
+            try {
+                const json = JSON.parse(input);
+                output.textContent = JSON.stringify(json, null, 4);
+                error.textContent = ""; // エラーメッセージをクリア
+                autoResizeOutput(); // 出力エリアの自動リサイズ
+            } catch (e) {
+                output.textContent = ""; // 出力エリアをクリア
+                error.textContent = "無効なJSONです。フォーマットを確認してください。";
+            }
+        }
+
+        function autoResizeOutput() {
+            const output = document.getElementById('jsonOutput');
+            output.style.height = "auto"; // 初期化
+            output.style.height = output.scrollHeight + "px"; // コンテンツに合わせて高さ調整
+        }
+    </script>
+</body>
+</html>

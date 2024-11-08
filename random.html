@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ランダム文字列生成</title>
+</head>
+<body>
+  <h1>ランダム文字列生成ツール</h1>
+
+  <label>
+    数字を含む (0-9):
+    <input type="checkbox" id="includeNumbers" checked>
+  </label><br>
+  <label>
+    ローマ字小文字を含む (a-z):
+    <input type="checkbox" id="includeLowercase" checked>
+  </label><br>
+  <label>
+    ローマ字大文字を含む (A-Z):
+    <input type="checkbox" id="includeUppercase" checked>
+  </label><br>
+  <label>
+    「-」を含む:
+    <input type="checkbox" id="includeHyphen">
+  </label><br>
+  <label>
+    「_」を含む:
+    <input type="checkbox" id="includeUnderscore">
+  </label><br>
+
+  <label>
+    文字数:
+    <input type="number" id="stringLength" min="1" value="10">
+  </label><br>
+  <label>
+    作成件数:
+    <input type="number" id="count" min="1" value="5">
+  </label><br>
+
+  <button onclick="generateStrings()">生成</button>
+
+  <h2>生成結果</h2>
+  <textarea id="result" rows="10" cols="50" readonly></textarea>
+
+  <script>
+    function generateStrings() {
+      const includeNumbers = document.getElementById('includeNumbers').checked;
+      const includeLowercase = document.getElementById('includeLowercase').checked;
+      const includeUppercase = document.getElementById('includeUppercase').checked;
+      const includeHyphen = document.getElementById('includeHyphen').checked;
+      const includeUnderscore = document.getElementById('includeUnderscore').checked;
+      const length = parseInt(document.getElementById('stringLength').value);
+      const count = parseInt(document.getElementById('count').value);
+      const resultArea = document.getElementById('result');
+      
+      let characters = '';
+      if (includeNumbers) characters += '0123456789';
+      if (includeLowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
+      if (includeUppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (includeHyphen) characters += '-';
+      if (includeUnderscore) characters += '_';
+
+      if (!characters) {
+        alert("少なくとも一つの文字種を選択してください。");
+        return;
+      }
+
+      const results = [];
+      for (let i = 0; i < count; i++) {
+        let randomString = '';
+        while (randomString.length < length) {
+          const char = characters.charAt(Math.floor(Math.random() * characters.length));
+          if (
+            (randomString.length === 0 || randomString.length === length - 1) &&
+            (char === '-' || char === '_')
+          ) {
+            continue; // 先頭または末尾に記号を使わない
+          }
+          randomString += char;
+        }
+        results.push(randomString);
+      }
+      
+      resultArea.value = results.join('\n');
+    }
+  </script>
+</body>
+</html>
